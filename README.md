@@ -4,6 +4,11 @@ This project was created as a submission for the Dicoding Microservices class.
 
 The Karsajobs project is a microservices-based application designed to manage job postings. It consists of a backend service written in Go and a frontend service built with Vue.js. The project also includes Kubernetes configuration files to deploy the services.
 
+## Docker Images
+
+- **Karsajobs Image**: `ghcr.io/gungindi/karsajobs:latest`
+- **Karsajobs-ui Image**: `ghcr.io/gungindi/karsajobs-ui:latest`
+
 ## Backend Service: Karsajobs
 
 The backend service for Karsajobs is written in Go. It provides RESTful APIs to manage job postings. 
