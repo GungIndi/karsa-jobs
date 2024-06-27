@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment  # Jenis objek yang akan dibuat adalah Deployment.
+metadata:
+  name: karsajobs-backend  # Nama deployment ini adalah "karsajobs-backend".
+  labels:
+    app: karsajobs  # Label yang diberikan untuk deployment ini adalah "app: karsajobs".
+spec:
+  selector:
+    matchLabels:
+      app: karsajobs  # Memilih pod dengan label "app: karsajobs" untuk dikelola oleh deployment ini.
+  template:
+    metadata:
+      labels:
+        app: karsajobs  # Label yang akan diberikan pada pod yang dibuat adalah "app: karsajobs".
+    spec:
+      containers:
+      - name: karsa-be  # Nama container adalah "karsa-be".
+        image: ghcr.io/gungindi/karsajobs:latest  # Image Docker yang akan digunakan untuk container.
+        ports:
+        - containerPort: 8080  # Port yang akan di-expose oleh container.
+        env:
+          - name: APP_PORT  # Variable lingkungan yang diset ke nilai "8080".
+            value: "8080"
+          - name: MONGO_HOST  # Variable lingkungan untuk host MongoDB.
+            value: "mongo"  # Nama layanan Kubernetes MongoDB.
+          - name: MONGO_USER  # Variable lingkungan untuk username MongoDB.
+            valueFrom:  # Nilai diambil dari sumber eksternal.
+              secretKeyRef:  # Mengambil nilai dari secret.
+                name: mongo-secret  # Nama secret yang menyimpan username MongoDB.
+                key: MONGO_ROOT_USERNAME  # Key dari secret yang berisi username MongoDB.
+          - name: MONGO_PASS  # Variable lingkungan untuk password MongoDB.
+            valueFrom:  # Nilai diambil dari sumber eksternal.
+              secretKeyRef:  # Mengambil nilai dari secret.
+                name: mongo-secret  # Nama secret yang menyimpan password MongoDB.
+                key: MONGO_ROOT_PASSWORD  # Key dari secret yang berisi password MongoDB.

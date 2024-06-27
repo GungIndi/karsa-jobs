@@ -1,0 +1,50 @@
+apiVersion: apps/v1  # Versi API yang digunakan untuk mengelola StatefulSet
+kind: StatefulSet  # Jenis objek yang akan dibuat, yaitu StatefulSet
+metadata:  # Metadata untuk mengidentifikasi objek ini
+  name: mongo-service  # Nama dari StatefulSet ini
+  labels:  # Label untuk StatefulSet ini
+    app: mongodb  # Label aplikasi untuk mengidentifikasi StatefulSet mongodb
+spec:  # Spesifikasi dari StatefulSet
+  serviceName: mongo-service  # Nama layanan yang akan digunakan oleh StatefulSet
+  replicas: 1  # Jumlah replika dari StatefulSet yang akan dijalankan (hanya 1 dalam kasus ini)
+  selector:  # Selector untuk menentukan Pods yang terkait dengan StatefulSet ini
+    matchLabels:  # Label yang harus cocok dengan Pods yang akan dipilih
+      app: mongodb  # Label yang harus cocok dengan label Pods untuk dipilih
+  minReadySeconds: 10  # Minimum waktu yang harus dijalankan untuk setiap Pods sebelum dianggap siap
+  template:  # Template untuk Pods yang akan dibuat oleh StatefulSet
+    metadata:  # Metadata untuk Pods
+      labels:  # Label untuk Pods yang akan dibuat
+        app: mongodb  # Label aplikasi untuk Pods
+    spec:  # Spesifikasi Pods
+      terminationGracePeriodSeconds: 10  # Waktu penundaan sebelum penghapusan Pods dimulai
+      containers:  # Container yang akan dijalankan di dalam Pods
+        - name: mongo  # Nama container
+          image: mongo:3  # Docker image yang akan digunakan untuk container
+          imagePullPolicy: IfNotPresent  # Kebijakan untuk menarik (pull) image jika tidak ada lokalnya
+          ports:  # Port yang akan diexpose oleh container
+            - containerPort: 27017  # Port yang akan diexpose oleh container (MongoDB default)
+          env:  # Variabel lingkungan yang akan diset dalam container
+            - name: MONGO_INITDB_ROOT_USERNAME_FILE  # Nama variabel lingkungan untuk username root MongoDB
+              value: /etc/mongo-credentials/MONGO_ROOT_USERNAME  # Nilai variabel lingkungan
+            - name: MONGO_INITDB_ROOT_PASSWORD_FILE  # Nama variabel lingkungan untuk password root MongoDB
+              value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD  # Nilai variabel lingkungan
+          volumeMounts:  # Mounting volume ke dalam container
+            - name: mongo-pv-volume  # Nama volume untuk menyimpan data MongoDB
+              mountPath: /data/db  # Path di dalam container tempat data MongoDB akan disimpan
+            - name: mongo-config  # Nama volume untuk menyimpan konfigurasi MongoDB
+              mountPath: /config  # Path di dalam container tempat konfigurasi MongoDB akan disimpan
+            - name: mongo-secret  # Nama volume untuk menyimpan kredensial rahasia MongoDB
+              mountPath: /etc/mongo-credentials  # Path di dalam container tempat kredensial MongoDB akan disimpan
+      volumes:  # Volume yang akan digunakan oleh Pods
+        - name: mongo-pv-volume  # Nama volume untuk menyimpan data MongoDB
+          persistentVolumeClaim:  # Menggunakan Persistent Volume Claim (PVC) untuk menyimpan data yang persisten
+            claimName: mongo-pv-claim  # Nama PVC yang akan digunakan
+        - name: mongo-config  # Nama volume untuk menyimpan konfigurasi MongoDB
+          configMap:  # Menggunakan ConfigMap untuk menyimpan konfigurasi
+            name: mongo-config  # Nama ConfigMap yang akan digunakan
+            items:  # Item konfigurasi yang akan digunakan dari ConfigMap
+              - key: mongo.conf  # Kunci konfigurasi dalam ConfigMap
+                path: mongo.conf  # Path di dalam container tempat konfigurasi akan disimpan
+        - name: mongo-secret  # Nama volume untuk menyimpan kredensial rahasia MongoDB
+          secret:  # Menggunakan Secret untuk menyimpan kredensial
+            secretName: mongo-secret  # Nama Secret yang akan digunakan

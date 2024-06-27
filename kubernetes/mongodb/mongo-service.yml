@@ -1,0 +1,13 @@
+apiVersion: v1  # Menentukan versi API Kubernetes yang digunakan, dalam hal ini v1.
+kind: Service   # Jenis objek Kubernetes yang akan dibuat, dalam hal ini adalah Service.
+metadata:       # Metadata untuk Service, seperti nama dan label.
+  name: mongo   # Nama Service yang akan dibuat adalah "mongo".
+  labels:       # Label yang terkait dengan Service ini.
+    app: mongodb   # Label "app" dengan nilai "mongodb".
+spec:           # Spesifikasi konfigurasi Service.
+  clusterIP: None  # Menetapkan bahwa Service ini tidak akan memiliki IP cluster, menggunakan "None".
+  ports:         # Daftar port yang akan di-mapping oleh Service.
+  - port: 27017  # Port yang akan di-expose oleh Service, dalam hal ini adalah port 27017.
+    targetPort: 27017  # Port target aplikasi yang akan diarahkan oleh Service, juga 27017 dalam kasus ini.
+  selector:      # Selector untuk menentukan pod-pod mana yang akan di-target oleh Service.
+    app: mongodb   # Menggunakan label "app: mongodb" untuk memilih pod-pod yang sesuai.

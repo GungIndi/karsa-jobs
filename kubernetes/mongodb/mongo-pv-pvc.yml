@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual  # Menentukan jenis penyimpanan yang digunakan untuk PersistentVolume.
+  capacity:
+    storage: 20Gi  # Kapasitas penyimpanan yang dialokasikan untuk PersistentVolume.
+  accessModes:
+    - ReadWriteOnce  # Mode akses yang didukung oleh PersistentVolume, dalam hal ini hanya ReadWriteOnce, artinya dapat di-mount untuk read-write oleh satu node.
+  hostPath:
+    path: "/data/db"  # Path dalam host file system tempat PersistentVolume akan di-mount.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pv-claim
+spec:
+  storageClassName: manual  # Menentukan jenis penyimpanan yang diminta oleh PersistentVolumeClaim.
+  accessModes:
+    - ReadWriteOnce  # Mode akses yang diminta oleh PersistentVolumeClaim, sesuai dengan PersistentVolume yang diperoleh.
+  resources:
+    requests:
+      storage: 20Gi  # Jumlah penyimpanan yang diminta oleh PersistentVolumeClaim.

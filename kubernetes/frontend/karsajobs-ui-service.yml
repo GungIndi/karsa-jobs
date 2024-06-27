@@ -1,0 +1,11 @@
+apiVersion: v1 # Menentukan versi API Kubernetes yang akan digunakan (v1).
+kind: Service # Mengatur jenis objek Kubernetes yang akan dibuat (Service).
+metadata: 
+  name: karsajobs-frontend # Menetapkan nama Service yang akan dibuat.
+spec:
+  selector:
+    app: karsajobs-frontend # Menetapkan label yang harus dimiliki oleh pod yang akan dipilih.
+  ports:
+    - protocol: TCP # Menetapkan protokol yang akan digunakan (TCP).
+      port: 8000 # Menetapkan port di mana Service akan dapat diakses dari dalam cluster.
+      targetPort: 8000 # Menetapkan port pada pod yang akan menerima permintaan yang diteruskan oleh Service.

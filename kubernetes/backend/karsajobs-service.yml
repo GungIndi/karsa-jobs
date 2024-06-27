@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: karsajobs-backend  # Nama Service untuk backend aplikasi KarsaJobs
+  labels:
+    app: karsajobs  # Label untuk aplikasi KarsaJobs
+spec:
+  selector:
+    app: karsajobs  # Menyaring pod yang memiliki label 'app: karsajobs' untuk dijadikan target oleh Service
+  type: NodePort  # Jenis Service yang digunakan adalah NodePort, artinya akan membuat Service yang dapat diakses dari luar cluster melalui IP node dan port tertentu
+  ports:
+  - port: 8080  # Port yang akan diexpose oleh Service
+    targetPort: 8080  # Port pada pod yang akan di-forward oleh Service

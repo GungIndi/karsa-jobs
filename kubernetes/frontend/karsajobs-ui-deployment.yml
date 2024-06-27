@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karsajobs-frontend  # Nama Deployment untuk frontend aplikasi KarsaJobs
+spec:
+  replicas: 1  # Jumlah replika dari pod yang akan dibuat
+  selector:
+    matchLabels:
+      app: karsajobs-frontend  # Memilih pod-pod yang memiliki label 'app: karsajobs-frontend' untuk dikelola oleh Deployment
+  template:
+    metadata:
+      labels:
+        app: karsajobs-frontend  # Label yang akan diberikan pada pod-pod yang dibuat oleh Deployment
+    spec:
+      containers:
+        - name: karsajobs-ui  # Nama dari container
+          image: ghcr.io/gungindi/karsajobs-ui:latest  # Image yang akan digunakan untuk container
+          ports:
+            - containerPort: 8000  # Port yang akan diexpose oleh container
+          env:
+          - name: VUE_APP_BACKEND  # Nama variabel lingkungan yang akan diset dalam container
+            value: http://127.0.0.1:44245  # Nilai dari variabel lingkungan yang diset dalam container
