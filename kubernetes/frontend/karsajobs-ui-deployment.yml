@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: karsajobs-frontend  # Nama Deployment untuk frontend aplikasi KarsaJobs
 spec:
-  replicas: 1  # Jumlah replika dari pod yang akan dibuat
+  replicas: 5  # Jumlah replika dari pod yang akan dibuat
   selector:
     matchLabels:
       app: karsajobs-frontend  # Memilih pod-pod yang memiliki label 'app: karsajobs-frontend' untuk dikelola oleh Deployment
