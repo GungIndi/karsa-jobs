@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/gungindi/karsajobs/pkg/models/mongodb"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -20,9 +19,6 @@ type application struct {
 }
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-    log.Fatalf("Error loading .env file: %v", err)
-  }
 
 	client, err := openDB()
 	if err != nil {
