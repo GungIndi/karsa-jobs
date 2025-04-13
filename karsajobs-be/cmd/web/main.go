@@ -8,7 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/nothinux/karsajobs/pkg/models/mongodb"
+	"github.com/gungindi/karsajobs/pkg/models/mongodb"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -19,6 +20,10 @@ type application struct {
 }
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+    log.Fatalf("Error loading .env file: %v", err)
+  }
+
 	client, err := openDB()
 	if err != nil {
 		log.Fatal(err)
@@ -45,7 +50,9 @@ func main() {
 }
 
 func openDB() (*mongo.Client, error) {
-	client, err := mongo.NewClient(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s@%s:27017/?authsource=admin", os.Getenv("MONGO_USER"), os.Getenv("MONGO_PASS"), os.Getenv("MONGO_HOST"))))
+	db := os.Getenv("MONGO_URI")
+	fmt.Print("db ", db, "\n")
+	client, err := mongo.NewClient(options.Client().ApplyURI(db))
 	if err != nil {
 		return nil, err
 	}

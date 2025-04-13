@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -11,7 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 
 	"github.com/go-chi/chi"
-	"github.com/nothinux/karsajobs/pkg/models"
+	"github.com/gungindi/karsajobs/pkg/models"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +37,7 @@ func (app *application) getJobs(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
-
+	fmt.Printf("data: %v", data)
 	w.Header().Add("Content-type", "application/json")
 	w.Write(out)
 }
@@ -55,7 +56,8 @@ func (app *application) getJob(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
-
+	
+	fmt.Printf("data: %v", data)
 	w.Header().Add("Content-type", "application/json")
 	w.Write(out)
 }

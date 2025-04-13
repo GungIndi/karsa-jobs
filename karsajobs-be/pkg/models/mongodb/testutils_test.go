@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nothinux/karsajobs/pkg/models"
+	"github.com/gungindi/karsajobs/pkg/models"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

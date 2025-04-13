@@ -10,7 +10,7 @@ import (
 
 	"context"
 
-	"github.com/nothinux/karsajobs/pkg/models"
+	"github.com/gungindi/karsajobs/pkg/models"
 )
 
 func TestGetJobPosts(t *testing.T) {
